@@ -1,132 +1,186 @@
-﻿using TaskCollaborationSystem;
-List<AddMember> newMember = new List<AddMember>();
-List<AddTask> newTask = new List<AddTask>();
-AddTask Task;
-do
-{ 
+﻿using System.ComponentModel.DataAnnotations;
+using TaskCollaborationSystem;
+
+var members = new List<Member>();
+var tasks = new List<MemberTask>();
+
 Console.WriteLine("Welcome to Task Collaboration System");
-Console.WriteLine("1.Add member");
-Console.WriteLine("2.Add task");
-Console.WriteLine("3.View all task");
-Console.WriteLine("4.search for task");
-Console.WriteLine("5.Assign/Change Task Owner");
-Console.WriteLine("6.View Overdue Tasks");
-Console.WriteLine("7.view member task");
-Console.WriteLine("8.Update Task Statu");
-Console.WriteLine("9.Delete a Task");
-Console.WriteLine("10.Exit");
-   string? choice = Console.ReadLine();
-switch (choice)
+
+do
 {
-    case "1":
-        {
-            AddMember Member = new AddMember();
-            Member.AddNewMember();
-            newMember.Add(Member);
+    // Display Menu
+    Console.WriteLine("1. Add member");
+    Console.WriteLine("2. Add task");
+    Console.WriteLine("3. View all task");
+    Console.WriteLine("4. Search for task");
+    Console.WriteLine("5. Assign/Change Task Owner");
+    Console.WriteLine("6. View Overdue Tasks");
+    Console.WriteLine("7. View All Assigned Tasks");
+    Console.WriteLine("8. Update Task Status");
+    Console.WriteLine("9. Delete a Task");
+    Console.WriteLine("10.Exit");
+
+    // Input choice
+    var choice = Console.ReadLine();
+    Console.Clear();
+
+    switch (choice)
+    {
+        case "1":
+            {
+                var member = new Member();
+                member.InputAndPopulate();
+
+                members.Add(member);
+
+                Console.WriteLine($"{member.Name} Added Successfully!");
+                PressToContinue();
                 break;
-        }
-    case "2":
-        {
-           Task = new AddTask();
-             Task.Task();
-            newTask.Add(Task);
-            break;
-        }
+            }
+        case "2":
+            {
+                var task = new MemberTask();
+                task.InputAndPopulate();
+
+                tasks.Add(task);
+
+                Console.WriteLine($"{task.Name} Added Successfully!");
+                PressToContinue();
+                break;
+            }
         case "3":
             {
-                foreach (var T in newTask)
+                if(tasks.Count == 0)
                 {
-                    T.show();
+                    Console.WriteLine("Nothing to show!");
+                    PressToContinue();
+                    break;
                 }
+
+                foreach (var task in tasks)
+                    task.Show();
+
+                PressToContinue();
                 break;
             }
         case "4":
             {
-                Task = new AddTask();
-                Console.WriteLine("Enter Task Name:");
-                string? taskName = Console.ReadLine();
-                foreach (var task in newTask)
+                Console.Write("Enter Task Name: ");
+                var taskName = Console.ReadLine();
+
+                var founded = tasks.Where(task => task.Name == taskName);
+             
+                if(founded == null)
+                    Console.WriteLine("Not Found!");
+                else
                 {
-                    if (task.TaskName == taskName)
-                    {
-                        task.show();
-                    }
+                    foreach (var task in founded)
+                        task.Show();
                 }
+
+                PressToContinue();
             }
             break;
         case "5":
             {
-                Task = new AddTask();
-                Task.AssignTask();
+                Console.Write("Enter Member Name: ");
+                var memberName = Console.ReadLine();
+
+                var member = members.Find(member => member.Name == memberName);
+                if(member == null)
+                {
+                    Console.WriteLine("Member not found!");
+                    PressToContinue();
+                    break;
+                }
+
+                Console.Write("Enter Task Name: ");
+                var taskName = Console.ReadLine();
+
+                var task = tasks.Find(task => task.Name == taskName);
+                if(task == null)
+                {
+                    Console.WriteLine("Task not found!");
+                    PressToContinue();
+                    break;
+                }
+
+                task.Assigne = member;
             }
             break;
         case "6":
             {
-                AddTask nT = new AddTask();
-                foreach (var T in newTask)
+                var found  = tasks.FindAll(task => task.DueDate < DateTime.Now);
+
+                found.ForEach(task =>
                 {
-                    if (T.TaskDueDate < DateTime.Now)
-                    {
-                       T.show();
-                    }
-                }
+                    task.Show();
+                });
             }
             break;
         case "7":
             {
-                Task = new AddTask();
-                Task.show();
+                var assignedTasks = tasks.FindAll(tasks => tasks.Assigne != null);
+                assignedTasks.ForEach(task => task.ShowAssignment());
             }
             break;
         case "8":
             {
-                Task = new AddTask();
-                Console.WriteLine("Enter Task Name");
-                string? TaskName = Console.ReadLine();
-                foreach (var task in newTask)
+                // Task task name as input
+                Console.Write("Enter Task Name: ");
+                var taskName = Console.ReadLine();
+
+                // Find the task having same name
+                var task = tasks.Find(task => task.Name == taskName);
+                if (task == null)
                 {
-                    if (task.TaskName == TaskName)
-                    {
-                        Console.WriteLine("Enter Task Status => Pending,InProgress,Completed");
-                        task.TaskStatus = Console.ReadLine();
-                        Console.WriteLine("Task status updated successfully.");
-                    }
+                    Console.WriteLine("Task not found!");
+                    PressToContinue();
+                    break;
                 }
+
+                task.UpdateStatus();
             }
             break;
         case "9":
             {
-                Task = new AddTask();
-                Console.WriteLine("Enter Task Name:");
-                string? taskName = Console.ReadLine();
-                foreach(var task in newTask)
+                // Task task name as input
+                Console.Write("Enter Task Name: ");
+                var taskName = Console.ReadLine();
+
+                // Find the task having same name
+                var task = tasks.Find(task => task.Name == taskName);
+                if (task == null)
                 {
-                    if (task.TaskName == taskName)
-                    {
-                        newTask.Remove(task);
-                        Console.WriteLine("Task deleted successfully.");
-                        break;
-                    }
+                    Console.WriteLine("Task not found!");
+                    PressToContinue();
+                    break;
                 }
+
+                // Remove
+                tasks.Remove(task);
             }
             break;
-        
+
         case "10":
             {
                 Environment.Exit(0);
                 break;
             }
         default:
-        {
-            Console.WriteLine("Invalid choice.");
-            break;
-        }
-}
-    Console.WriteLine("Do you want to continue? (Y/N)");
-    string? response = Console.ReadLine();
-    if (response.ToUpper() == "N")
-    {
-        break;
+            {
+                Console.WriteLine("Invalid choice.");
+                break;
+            }
     }
-    Console.WriteLine();
+
+   
+    Console.Clear();
 } while (true);
+
+
+void PressToContinue()
+{
+    Console.WriteLine("\nPress any key to continue...");
+    Console.ReadKey();
+}
