@@ -1,0 +1,54 @@
+﻿
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+
+namespace TaskCollaborationSystem
+{
+
+    class MemberTask
+    {
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Status { get; set; }
+        public DateTime DueDate { get; set; }
+        public Member? Assigne { get; set; }
+
+        public void InputAndPopulate()
+        {
+            Console.Write("Enter Task Name: ");
+            Name = Console.ReadLine();
+
+            Console.Write("Enter Task Description: ");
+            Description = Console.ReadLine();
+
+            Console.Write("Enter Task Due Date: ");
+            DueDate = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Enter Task Status: ");
+            Status = Console.ReadLine();
+        }
+
+        public void Show()
+        {
+            Console.WriteLine($"Task Name: {Name} ");
+            Console.WriteLine($"Task Description: {Description}");
+            Console.WriteLine($"Task Due Date:{DueDate} ");
+            Console.WriteLine($"Task Status:{Status} \n");
+        }
+
+        public void ShowAssignment()
+        {
+            if (Assigne?.Name is not null)
+            {
+                Console.WriteLine($"{Name} - {Assigne.Name}");
+            }
+        }
+
+        public void UpdateStatus()
+        {
+            Console.Write("Enter Task Status: ");
+            var newStatus = Console.ReadLine();
+            Status = newStatus;
+        }
+    }
+}
