@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TaskCollaborationSystem;
+﻿using TaskCollaborationSystem; 
 
 var members = new List<Member>();
 var tasks = new List<MemberTask>();
@@ -8,19 +7,13 @@ Console.WriteLine("Welcome to Task Collaboration System");
 
 do
 {
-    // Display Menu
-    Console.WriteLine("1. Add member");
-    Console.WriteLine("2. Add task");
-    Console.WriteLine("3. View all task");
-    Console.WriteLine("4. Search for task");
-    Console.WriteLine("5. Assign/Change Task Owner");
-    Console.WriteLine("6. View Overdue Tasks");
-    Console.WriteLine("7. View All Assigned Tasks");
-    Console.WriteLine("8. Update Task Status");
-    Console.WriteLine("9. Delete a Task");
-    Console.WriteLine("10.Exit");
+    Console.WriteLine("1. Add");
+    Console.WriteLine("2. Delete");
+    Console.WriteLine("3. View");
+    Console.WriteLine("4. Update");
+    Console.WriteLine("5.Exit");
 
-    // Input choice
+    Console.Write("Enter your choice: ");
     var choice = Console.ReadLine();
     Console.Clear();
 
@@ -28,141 +21,162 @@ do
     {
         case "1":
             {
-                var member = new Member();
-                member.InputAndPopulate();
+                Console.WriteLine("Enter 'Member' to add a member or 'Task' to add a task:");
+                var input = Console.ReadLine();
 
-                members.Add(member);
+                switch (input)
+                {
+                    case "Member":
+                        var member = new Member();
+                        member.InputAndPopulate();
+                        members.Add(member);
+                        Console.WriteLine($"{member.Name} added successfully!");
+                        break;
 
-                Console.WriteLine($"{member.Name} Added Successfully!");
+                    case "Task":
+                        var task = new MemberTask();
+                        task.InputAndPopulate();
+                        tasks.Add(task);
+                        Console.WriteLine($"{task.Name} added successfully!");
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter 'Member' or 'Task'.");
+                        break;
+                }
+
                 PressToContinue();
                 break;
             }
         case "2":
             {
-                var task = new MemberTask();
-                task.InputAndPopulate();
+                Console.WriteLine("Enter 'Member' to add a member or 'Task' to add a task:");
+                var input = Console.ReadLine();
 
-                tasks.Add(task);
+                switch (input)
+                {
+                    case "Member":
+                        Console.Write("Enter Member Name: ");
+                        var memberName = Console.ReadLine();
+                        var member = members.Find(member => member.Name == memberName);
+                        if (member == null)
+                        {
+                            Console.WriteLine("Member not found!");
+                            PressToContinue();
+                            break;
+                        }
+                        members.Remove(member);
+                        Console.WriteLine($"{memberName} Removed Successfully!");
+                        PressToContinue();
+                        break;
 
-                Console.WriteLine($"{task.Name} Added Successfully!");
-                PressToContinue();
+                    case "Task":
+                        Console.Write("Enter Task Name: ");
+                        var taskName = Console.ReadLine();
+                        var task = tasks.Find(task => task.Name == taskName);
+                        if (task == null)
+                        {
+                            Console.WriteLine("Task not found!");
+                            PressToContinue();
+                            break;
+                        }
+
+                        tasks.Remove(task);
+                        Console.WriteLine($"{taskName} Removed Successfully!");
+                        PressToContinue();
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter 'Member' or 'Task'.");
+                        break;
+                }
                 break;
             }
         case "3":
             {
-                if(tasks.Count == 0)
+                Console.WriteLine("Enter 'Member' to add a member or 'Task' to add a task:");
+                var input = Console.ReadLine();
+
+                switch (input)
                 {
-                    Console.WriteLine("Nothing to show!");
-                    PressToContinue();
-                    break;
+                    case "Member":
+                        if (members.Count == 0)
+                        {
+                            Console.WriteLine("Nothing to show!");
+                            PressToContinue();
+                            break;
+                        }
+                        else
+                        {
+                            foreach (var member in members)
+                                member.Show();
+                            PressToContinue();
+                            break;
+                        }
+                    case "Task":
+                    if (tasks.Count == 0)
+                    {
+                        Console.WriteLine("Nothing to show!");
+                        PressToContinue();
+                        break;
+                    }
+                    else
+                    {
+                        foreach (var task in tasks)
+                            task.Show();
+                        PressToContinue();
+                        break;
+                    }
+                default:
+                        Console.WriteLine("Invalid choice. Please enter 'Member' or 'Task'.");
+                        break;
                 }
-
-                foreach (var task in tasks)
-                    task.Show();
-
-                PressToContinue();
                 break;
             }
         case "4":
             {
-                Console.Write("Enter Task Name: ");
-                var taskName = Console.ReadLine();
+                Console.WriteLine("Enter \n'Member' to add a member or 'Task' to add a task:");
+                var input = Console.ReadLine();
 
-                var founded = tasks.Where(task => task.Name == taskName);
-             
-                if(founded == null)
-                    Console.WriteLine("Not Found!");
-                else
+                switch (input)
                 {
-                    foreach (var task in founded)
-                        task.Show();
-                }
+                    case "Member":
+                        Console.Write("Enter Member Name: ");
+                        var memberName = Console.ReadLine();
+                        var member = members.Find(member => member.Name == memberName);
+                        if (member == null)
+                        {
+                            Console.WriteLine("Member not found!");
+                            PressToContinue();
+                            break;
+                        }
+                        member.InputAndPopulate();
+                        Console.WriteLine($"{memberName} Updated Successfully!");
+                        PressToContinue();
+                        break;
 
-                PressToContinue();
+                    case "Task":
+                        Console.Write("Enter Task Name: ");
+                        var taskName = Console.ReadLine();
+                        var task = tasks.Find(task => task.Name == taskName);
+                        if (task == null)
+                        {
+                            Console.WriteLine("Task not found!");
+                            PressToContinue();
+                            break;
+                        }
+                        task.InputAndPopulate();
+                        Console.WriteLine($"{taskName} Updated Successfully!");
+                        PressToContinue();
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter 'Member' or 'Task'.");
+                        break;
+                }
             }
             break;
         case "5":
-            {
-                Console.Write("Enter Member Name: ");
-                var memberName = Console.ReadLine();
-
-                var member = members.Find(member => member.Name == memberName);
-                if(member == null)
-                {
-                    Console.WriteLine("Member not found!");
-                    PressToContinue();
-                    break;
-                }
-
-                Console.Write("Enter Task Name: ");
-                var taskName = Console.ReadLine();
-
-                var task = tasks.Find(task => task.Name == taskName);
-                if(task == null)
-                {
-                    Console.WriteLine("Task not found!");
-                    PressToContinue();
-                    break;
-                }
-
-                task.Assigne = member;
-            }
-            break;
-        case "6":
-            {
-                var found  = tasks.FindAll(task => task.DueDate < DateTime.Now);
-
-                found.ForEach(task =>
-                {
-                    task.Show();
-                });
-            }
-            break;
-        case "7":
-            {
-                var assignedTasks = tasks.FindAll(tasks => tasks.Assigne != null);
-                assignedTasks.ForEach(task => task.ShowAssignment());
-            }
-            break;
-        case "8":
-            {
-                // Task task name as input
-                Console.Write("Enter Task Name: ");
-                var taskName = Console.ReadLine();
-
-                // Find the task having same name
-                var task = tasks.Find(task => task.Name == taskName);
-                if (task == null)
-                {
-                    Console.WriteLine("Task not found!");
-                    PressToContinue();
-                    break;
-                }
-
-                task.UpdateStatus();
-            }
-            break;
-        case "9":
-            {
-                // Task task name as input
-                Console.Write("Enter Task Name: ");
-                var taskName = Console.ReadLine();
-
-                // Find the task having same name
-                var task = tasks.Find(task => task.Name == taskName);
-                if (task == null)
-                {
-                    Console.WriteLine("Task not found!");
-                    PressToContinue();
-                    break;
-                }
-
-                // Remove
-                tasks.Remove(task);
-            }
-            break;
-
-        case "10":
             {
                 Environment.Exit(0);
                 break;
@@ -173,8 +187,6 @@ do
                 break;
             }
     }
-
-   
     Console.Clear();
 } while (true);
 

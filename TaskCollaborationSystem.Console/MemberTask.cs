@@ -36,19 +36,6 @@ namespace TaskCollaborationSystem
             Console.WriteLine($"Task Status:{Status} \n");
         }
 
-        public void ShowAssignment()
-        {
-            if (Assigne?.Name is not null)
-            {
-                Console.WriteLine($"{Name} - {Assigne.Name}");
-            }
-        }
-
-        public void UpdateStatus()
-        {
-            Console.Write("Enter Task Status: ");
-            var newStatus = Console.ReadLine();
-            Status = newStatus;
-        }
+        
     }
 }
