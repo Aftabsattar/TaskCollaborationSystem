@@ -18,7 +18,6 @@ namespace TaskCollaborationSystem
             Console.Write("Enter Email: ");
             Email = Console.ReadLine();
         }
-        // create a method to show the member details
         public void Show()
         {
             Console.WriteLine($"Member Id: {Id} ");

@@ -1,8 +1,4 @@
-﻿
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-
-namespace TaskCollaborationSystem
+﻿namespace TaskCollaborationSystem
 {
 
     class MemberTask
