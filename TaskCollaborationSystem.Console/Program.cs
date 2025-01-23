@@ -1,6 +1,11 @@
-﻿using TaskCollaborationSystem;
+﻿using TaskCollaborationSystem.ConsoleApp.Entities;
+using TaskCollaborationSystem.ConsoleApp.Managers;
+using TaskCollaborationSystem.ConsoleApp.Managers.Interface;
 
-TaskManager taskManager = new TaskManager();
+IManager taskManager = new Manager<MemberTask>();
+IManager memberManager = new Manager<Member>();
+IManager manager = taskManager;
+
 Console.WriteLine("Welcome to Task Collaboration System");
 
 do
@@ -9,7 +14,7 @@ do
     Console.WriteLine("2. Delete");
     Console.WriteLine("3. View");
     Console.WriteLine("4. Update");
-    Console.WriteLine("5.Exit");
+    Console.WriteLine("5. Exit");
 
     Console.Write("Enter your choice: ");
     var choice = Console.ReadLine();
@@ -19,34 +24,27 @@ do
     {
         case "1":
             {
-                Console.WriteLine("Member");
-                Console.WriteLine("Task");
-                var input = Console.ReadLine();
-                taskManager.Add(input);
+                ChooseManager();
+                manager.Add();
                 break;
             }
         case "2":
             {
-                Console.WriteLine("Member");
-                Console.WriteLine("Task");
-                var input = Console.ReadLine();
-                taskManager.Remove(input);
-            break;
+                ChooseManager();
+                manager.Remove();
+                break;
             }
         case "3":
             {
-                Console.WriteLine("Member");
-                Console.WriteLine("Task");
-                var input = Console.ReadLine();
-                taskManager.View(input);
+
+                ChooseManager();
+                manager.View();
                 break;
             }
         case "4":
             {
-                Console.WriteLine("Member");
-                Console.WriteLine("Task");
-                var input = Console.ReadLine();
-                taskManager.Update(input);
+                ChooseManager();
+                manager.Update();
                 break;
             }
            
@@ -64,5 +62,26 @@ do
     Console.Clear();
 } while (true);
 
+int ChooseEntity()
+{
+    Console.WriteLine("1. Member");
+    Console.WriteLine("2. Task");
+    Console.Write("Choose from above > ");
+    return Convert.ToInt32(Console.ReadLine());
+}
 
-
+void ChooseManager()
+{
+    switch (ChooseEntity())
+    {
+        case 1:
+            manager = memberManager;
+            break;
+        case 2:
+            manager = taskManager;
+            break;
+        default:
+            Console.WriteLine("Invalid choice.");
+            break;
+    }
+}

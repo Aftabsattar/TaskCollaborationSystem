@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskCollaborationSystem.Console", "TaskCollaborationSystem.Console\TaskCollaborationSystem.Console.csproj", "{E96A9654-1E83-4CE7-BE9F-325D0C437205}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskCollaborationSystem.ConsoleApp", "TaskCollaborationSystem.Console\TaskCollaborationSystem.ConsoleApp.csproj", "{E96A9654-1E83-4CE7-BE9F-325D0C437205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
